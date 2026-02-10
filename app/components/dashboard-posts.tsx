@@ -11,7 +11,7 @@ interface Post {
   id: string;
   title: string;
   excerpt?: string;
-  createdAt: string;
+  created_at: string;
   views: number;
   likes: number;
 }
@@ -69,7 +69,7 @@ export function DashboardPosts({ posts }: DashboardPostsProps) {
                     </p>
                   )}
                   <p className="text-xs text-muted-foreground mt-1">
-                    {new Date(post.createdAt).toLocaleDateString()}
+                    {new Date(post.created_at).toLocaleDateString()}
                   </p>
                 </div>
 
