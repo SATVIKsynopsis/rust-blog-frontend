@@ -21,7 +21,7 @@ interface Post {
   id: string;
   title: string;
   excerpt?: string;
-  createdAt: string;
+  created_at: string;
   views: number;
   likes: number;
 }
