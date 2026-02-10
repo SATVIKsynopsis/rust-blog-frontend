@@ -17,7 +17,7 @@ export async function apiFetch(
   const data = text ? JSON.parse(text) : null;
 
   if (!res.ok) {
-    throw new Error(data.message || "Something went wrong");
+    throw new Error(data?.message || "Something went wrong");
   }
 
   return data;
