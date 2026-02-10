@@ -28,8 +28,7 @@ export function DashboardPosts({ posts }: DashboardPostsProps) {
 
     setIsDeleting(postId);
     try {
-      await apiFetch(`/posts/${postId}`, { method: 'DELETE' });
-      // In a real app, you'd refresh the posts list here
+      await apiFetch(`/api/posts/post/${postId}`, { method: 'DELETE' });
       window.location.reload();
     } catch (error) {
       console.error('Delete failed:', error);
