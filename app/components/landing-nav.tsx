@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Pen } from 'lucide-react';
+import { ThemeToggle } from './theme-toggle';
 
 export function LandingNav() {
   return (
@@ -33,6 +34,7 @@ export function LandingNav() {
 
         {/* CTA buttons */}
         <div className="flex items-center gap-4">
+          <ThemeToggle />
           <Link href="/login">
             <Button variant="ghost" className="rounded-full">
               Sign In
