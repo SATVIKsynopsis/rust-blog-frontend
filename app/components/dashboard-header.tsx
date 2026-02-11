@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Plus, LogOut, User } from 'lucide-react';
 import { ThemeToggle } from './theme-toggle';
 import { useRouter } from 'next/navigation';
-import { apiFetch } from '@/lib/api';
+import { logout } from '@/lib/api';
 import { useState } from 'react';
 
 export function DashboardHeader() {
@@ -15,7 +15,7 @@ export function DashboardHeader() {
   const handleLogout = async () => {
     setIsLoading(true);
     try {
-      await apiFetch('/auth/logout', { method: 'POST' });
+      await logout();
       router.push('/login');
     } catch (error) {
       console.error('Logout failed:', error);
@@ -31,7 +31,7 @@ export function DashboardHeader() {
           <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold">
             B
           </div>
-          <h1 className="text-2xl font-bold">BlogHub</h1>
+          <h1 className="text-2xl font-bold">Bloggy</h1>
         </div>
 
         <div className="flex items-center gap-4">
