@@ -84,6 +84,12 @@ export function DashboardPosts({ posts }: DashboardPostsProps) {
                 </div>
 
                 <div className="flex items-center gap-2 ml-4">
+                  <Link href={`/post/${post.id}`}>
+                    <Button size="sm" variant="outline" className="gap-2 bg-transparent">
+                      <Eye className="w-4 h-4" />
+                      View
+                    </Button>
+                  </Link>
                   <Link href={`/dashboard/posts/${post.id}/edit`}>
                     <Button size="sm" variant="outline" className="gap-2 bg-transparent">
                       <Edit className="w-4 h-4" />
