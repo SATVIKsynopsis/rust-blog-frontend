@@ -82,7 +82,7 @@ export async function getAllPosts(page = 1, limit = 10) {
 }
 
 export async function getMyPosts() {
-  return apiFetch("/api/posts/post/my", {
+  return apiFetch("/api/posts/posts/my", {
     method: "GET",
   });
 }
