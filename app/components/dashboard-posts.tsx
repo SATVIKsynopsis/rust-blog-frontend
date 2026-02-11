@@ -72,17 +72,6 @@ export function DashboardPosts({ posts }: DashboardPostsProps) {
                   </p>
                 </div>
 
-                <div className="flex items-center gap-4 ml-4 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <Eye className="w-4 h-4" />
-                    <span>{post.views}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Heart className="w-4 h-4" />
-                    <span>{post.likes}</span>
-                  </div>
-                </div>
-
                 <div className="flex items-center gap-2 ml-4">
                   <Link href={`/post/${post.id}`}>
                     <Button size="sm" variant="outline" className="gap-2 bg-transparent">
