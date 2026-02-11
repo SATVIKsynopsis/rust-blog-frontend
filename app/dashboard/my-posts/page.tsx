@@ -113,7 +113,7 @@ export default function MyPostsPage() {
           </div>
 
           {/* Posts */}
-          <DashboardPosts posts={posts} userId={userId} title="My Posts" />
+          <DashboardPosts posts={posts} userId={userId} title="My Posts" showActions />
         </div>
       </main>
     </>

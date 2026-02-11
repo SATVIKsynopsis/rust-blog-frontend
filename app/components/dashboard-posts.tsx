@@ -26,9 +26,10 @@ interface DashboardPostsProps {
   posts: Post[];
   userId?: string;
   title?: string;
+  showActions?: boolean;
 }
 
-export function DashboardPosts({ posts, userId, title = 'Your Posts' }: DashboardPostsProps) {
+export function DashboardPosts({ posts, userId, title = 'Your Posts', showActions = false }: DashboardPostsProps) {
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
 
   const handleDelete = async (postId: string) => {
@@ -92,7 +93,7 @@ export function DashboardPosts({ posts, userId, title = 'Your Posts' }: Dashboar
                       View
                     </Button>
                   </Link>
-                  {(!userId || userId === post.user_id || userId === post.author?.id) && (
+                  {(showActions || !userId || userId === post.user_id || userId === post.author?.id) && (
                     <>
                       <Link href={`/dashboard/posts/${post.id}/edit`}>
                         <Button size="sm" variant="outline" className="gap-2 bg-transparent">
