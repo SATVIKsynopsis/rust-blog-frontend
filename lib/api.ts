@@ -115,3 +115,9 @@ export async function unlikePost(postId: string) {
     method: "POST",
   });
 }
+
+export async function totalLikes() {
+  return apiFetch("/api/posts/posts/likes", {
+    method: "GET",
+  });
+}

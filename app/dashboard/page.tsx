@@ -7,7 +7,7 @@ import { DashboardPosts } from '../components/dashboard-posts';
 import { useEffect, useState } from 'react';
 import { apiFetch } from '@/lib/api';
 import { useRouter } from 'next/navigation';
-import { getCurrentUser, getAllPosts, getMyPosts } from '@/lib/api';
+import { getCurrentUser, getAllPosts, getMyPosts, totalLikes } from '@/lib/api';
 
 interface User {
   id: string;
@@ -48,22 +48,24 @@ export default function DashboardPage() {
     try {
       setIsLoading(true);
 
-const [meResponse, allPostsResponse, myPostsResponse] = await Promise.all([
+const [meResponse, allPostsResponse, myPostsResponse, likesResponse] = await Promise.all([
   getCurrentUser(),
   getAllPosts(1, 50),
   getMyPosts(),
+  totalLikes(),
 ]);
 
 const user = meResponse.data.user;
 const allPosts = allPostsResponse?.data?.posts || allPostsResponse?.posts || allPostsResponse || [];
 const myPosts = myPostsResponse || [];
+const totalLikesCount = likesResponse?.data?.total_likes ?? likesResponse?.total_likes ?? myPosts.reduce((s: number, p: any) => s + (p.likes ?? 0), 0);
 
 const dashboardData = {
   user,
   posts: allPosts,
   stats: {
     totalPosts: myPosts.length,
-    totalLikes: myPosts.reduce((s: number, p: any) => s + (p.likes ?? 0), 0),
+    totalLikes: totalLikesCount,
     totalViews: myPosts.reduce((s: number, p: any) => s + (p.views ?? 0), 0),
   },
 };
