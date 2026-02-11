@@ -14,13 +14,21 @@ interface Post {
   created_at: string;
   views: number;
   likes: number;
+  user_id?: string;
+  author?: {
+    id: string;
+    name: string;
+    username: string;
+  };
 }
 
 interface DashboardPostsProps {
   posts: Post[];
+  userId?: string;
+  title?: string;
 }
 
-export function DashboardPosts({ posts }: DashboardPostsProps) {
+export function DashboardPosts({ posts, userId, title = 'Your Posts' }: DashboardPostsProps) {
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
 
   const handleDelete = async (postId: string) => {
@@ -41,7 +49,7 @@ export function DashboardPosts({ posts }: DashboardPostsProps) {
   return (
     <Card className="col-span-full">
       <CardHeader>
-        <CardTitle>Your Posts</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
         {posts.length === 0 ? (
@@ -67,6 +75,11 @@ export function DashboardPosts({ posts }: DashboardPostsProps) {
                       {post.excerpt}
                     </p>
                   )}
+                  {post.author && (
+                    <p className="text-xs text-muted-foreground">
+                      by {post.author.name || post.author.username}
+                    </p>
+                  )}
                   <p className="text-xs text-muted-foreground mt-1">
                     {new Date(post.created_at).toLocaleDateString()}
                   </p>
@@ -79,22 +92,26 @@ export function DashboardPosts({ posts }: DashboardPostsProps) {
                       View
                     </Button>
                   </Link>
-                  <Link href={`/dashboard/posts/${post.id}/edit`}>
-                    <Button size="sm" variant="outline" className="gap-2 bg-transparent">
-                      <Edit className="w-4 h-4" />
-                      Edit
-                    </Button>
-                  </Link>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="gap-2 text-destructive hover:text-destructive bg-transparent"
-                    onClick={() => handleDelete(post.id)}
-                    disabled={isDeleting === post.id}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                    {isDeleting === post.id ? 'Deleting...' : 'Delete'}
-                  </Button>
+                  {(!userId || userId === post.user_id || userId === post.author?.id) && (
+                    <>
+                      <Link href={`/dashboard/posts/${post.id}/edit`}>
+                        <Button size="sm" variant="outline" className="gap-2 bg-transparent">
+                          <Edit className="w-4 h-4" />
+                          Edit
+                        </Button>
+                      </Link>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="gap-2 text-destructive hover:text-destructive bg-transparent"
+                        onClick={() => handleDelete(post.id)}
+                        disabled={isDeleting === post.id}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        {isDeleting === post.id ? 'Deleting...' : 'Delete'}
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
             ))}

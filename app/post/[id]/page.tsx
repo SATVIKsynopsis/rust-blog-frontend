@@ -32,26 +32,28 @@ export default function ViewPostPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        setIsLoading(true);
-        const response = await getPostById(params.id as string);
-        // Handle both { data: { post } } and direct post object
-        const postData = response?.data?.post || response?.post || response;
-        setPost(postData);
-      } catch (err) {
-        console.error('Failed to fetch post:', err);
-        const message = err instanceof Error ? err.message : 'Failed to load post';
-        setError(message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const fetchPost = async () => {
+    try {
+      setIsLoading(true);
 
-    if (params.id) {
-      fetchPost();
+      const response = await getPostById(params.id as string);
+
+      const postData = response?.data?.post || response?.post || response;
+
+      setPost(postData);
+    } catch (err) {
+      console.error('Failed to fetch post:', err);
+      setError(err instanceof Error ? err.message : 'Failed to load post');
+    } finally {
+      setIsLoading(false);
     }
-  }, [params.id]);
+  };
+
+  if (params.id) {
+    fetchPost();
+  }
+}, [params.id]);
+
 
   if (isLoading) {
     return (

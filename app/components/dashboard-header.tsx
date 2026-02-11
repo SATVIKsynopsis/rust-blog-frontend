@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Plus, LogOut } from 'lucide-react';
+import { Plus, LogOut, User } from 'lucide-react';
 import { ThemeToggle } from './theme-toggle';
 import { useRouter } from 'next/navigation';
 import { apiFetch } from '@/lib/api';
@@ -36,6 +36,12 @@ export function DashboardHeader() {
 
         <div className="flex items-center gap-4">
           <ThemeToggle />
+          <Link href="/dashboard/my-posts">
+            <Button size="sm" variant="outline" className="gap-2 bg-transparent">
+              <User className="w-4 h-4" />
+              My Posts
+            </Button>
+          </Link>
           <Link href="/dashboard/create">
             <Button size="sm" className="gap-2">
               <Plus className="w-4 h-4" />
