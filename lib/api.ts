@@ -81,6 +81,12 @@ export async function getAllPosts(page = 1, limit = 10) {
   });
 }
 
+export async function getMyPosts() {
+  return apiFetch("/api/posts/my", {
+    method: "GET",
+  });
+}
+
 export async function updatePost(
   postId: string,
   title: string,

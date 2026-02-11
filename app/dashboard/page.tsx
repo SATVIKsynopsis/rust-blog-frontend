@@ -7,7 +7,7 @@ import { DashboardPosts } from '../components/dashboard-posts';
 import { useEffect, useState } from 'react';
 import { apiFetch } from '@/lib/api';
 import { useRouter } from 'next/navigation';
-import { getCurrentUser, getAllPosts } from '@/lib/api';
+import { getCurrentUser, getMyPosts } from '@/lib/api';
 
 interface User {
   id: string;
@@ -48,13 +48,13 @@ export default function DashboardPage() {
     try {
       setIsLoading(true);
 
-      const [meResponse, postsResponse] = await Promise.all([
+const [meResponse, postsResponse] = await Promise.all([
   getCurrentUser(),
-  getAllPosts(1, 10),
+  getMyPosts(),
 ]);
 
 const user = meResponse.data.user; 
-const posts = postsResponse.posts ?? postsResponse;
+const posts = postsResponse;
 
 const dashboardData = {
   user,
