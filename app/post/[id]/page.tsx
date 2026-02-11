@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { getPostById } from '@/lib/api';
+import { getPostById, likePost, unlikePost } from '@/lib/api';
 import { DashboardHeader } from '@/app/components/dashboard-header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -17,6 +17,7 @@ interface Post {
   updated_at?: string;
   views?: number;
   likes?: number;
+  is_liked?: boolean;
   author?: {
     id: string;
     name: string;
@@ -30,6 +31,9 @@ export default function ViewPostPage() {
   const [post, setPost] = useState<Post | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isLiking, setIsLiking] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
 
   useEffect(() => {
   const fetchPost = async () => {
@@ -41,6 +45,8 @@ export default function ViewPostPage() {
       const postData = response?.data?.post || response?.post || response;
 
       setPost(postData);
+      setIsLiked(postData.is_liked ?? false);
+      setLikeCount(postData.likes ?? 0);
     } catch (err) {
       console.error('Failed to fetch post:', err);
       setError(err instanceof Error ? err.message : 'Failed to load post');
@@ -99,6 +105,26 @@ export default function ViewPostPage() {
     );
   }
 
+  const handleLike = async () => {
+    if (isLiking) return;
+    setIsLiking(true);
+    try {
+      if (isLiked) {
+        await unlikePost(params.id as string);
+        setIsLiked(false);
+        setLikeCount((prev) => Math.max(0, prev - 1));
+      } else {
+        await likePost(params.id as string);
+        setIsLiked(true);
+        setLikeCount((prev) => prev + 1);
+      }
+    } catch (err) {
+      console.error('Like/unlike failed:', err);
+    } finally {
+      setIsLiking(false);
+    }
+  };
+
   return (
     <>
       <DashboardHeader />
@@ -145,12 +171,10 @@ export default function ViewPostPage() {
                     <span>{post.views} views</span>
                   </div>
                 )}
-                {post.likes !== undefined && (
-                  <div className="flex items-center gap-1.5">
-                    <Heart className="w-4 h-4" />
-                    <span>{post.likes} likes</span>
-                  </div>
-                )}
+                <div className="flex items-center gap-1.5">
+                  <Heart className="w-4 h-4" />
+                  <span>{likeCount} likes</span>
+                </div>
               </div>
             </CardHeader>
 
@@ -161,6 +185,31 @@ export default function ViewPostPage() {
                   {post.content}
                 </div>
               </article>
+
+              {/* Like Button */}
+              <div className="mt-8 pt-6 border-t border-border flex items-center gap-3">
+                <Button
+                  variant={isLiked ? 'default' : 'outline'}
+                  size="sm"
+                  className={`gap-2 ${
+                    isLiked
+                      ? 'bg-accent text-accent-foreground hover:bg-accent/80'
+                      : 'bg-transparent'
+                  }`}
+                  onClick={handleLike}
+                  disabled={isLiking}
+                >
+                  <Heart
+                    className={`w-4 h-4 ${
+                      isLiked ? 'fill-current' : ''
+                    }`}
+                  />
+                  {isLiking ? '...' : isLiked ? 'Liked' : 'Like'}
+                </Button>
+                <span className="text-sm text-muted-foreground">
+                  {likeCount} {likeCount === 1 ? 'like' : 'likes'}
+                </span>
+              </div>
             </CardContent>
           </Card>
         </div>

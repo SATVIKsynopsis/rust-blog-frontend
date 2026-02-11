@@ -103,3 +103,15 @@ export async function deletePost(postId: string) {
     method: "DELETE",
   });
 }
+
+export async function likePost(postId: string) {
+  return apiFetch(`/api/posts/post/${postId}/like`, {
+    method: "POST",
+  });
+}
+
+export async function unlikePost(postId: string) {
+  return apiFetch(`/api/posts/post/${postId}/unlike`, {
+    method: "POST",
+  });
+}
